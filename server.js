@@ -2,6 +2,7 @@
 
 var debug = require('debug')('balance:server');
 var express = require("express");
+var avm = require('alexa-verifier-middleware');
 var app = express();
 var router = express.Router();
 var logger = require('morgan');
