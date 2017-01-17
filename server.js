@@ -20,6 +20,7 @@ function requestVerifier(req, res, next) {
       req.rawBody,
       function verificationCallback(err) {
           if (err) {
+            console.log(err);
               res.status(401).json({ message: 'Verification Failure', error: err });
           } else {
               next();
