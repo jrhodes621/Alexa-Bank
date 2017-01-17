@@ -4,12 +4,16 @@
   "description": "Echo Voice Enabled Banking Technology",
   "main": "index.js",
   "scripts": {
+    "start": "node --use_strict ./bin/api",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "api-error-handler": "^1.0.0",
     "body-parser": "^1.15.2",
-    "express": "^4.14.0"
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "morgan": "^1.7.0"
   }
 }
