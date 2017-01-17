@@ -102,8 +102,6 @@ router.post('/balance', requestVerifier, function(req, res) {
       // Handle this error by producing a response like:
       // "Hmm, what day do you want to know the forecast for?"
     }
-    let day = new Date(req.body.request.intent.slots.Day.value);
-
     // Do your business logic to get weather data here!
     // Then send a JSON response...
 
@@ -113,7 +111,7 @@ router.post('/balance', requestVerifier, function(req, res) {
         "shouldEndSession": true,
         "outputSpeech": {
           "type": "SSML",
-          "ssml": "<speak>$1333.45</speak>"
+          "ssml": "<speak>Your balance is $1333.45</speak>"
         }
       }
     });
