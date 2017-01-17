@@ -59,7 +59,7 @@ function errorNotification(err, str, req) {
 }
 
 //Public endpoints
-router.post('/balance', requestVerifier, function(req, res) {
+router.post('/balance', function(req, res) {
   if (req.body.request.type === 'LaunchRequest') {
     res.json({
       "version": "1.0",
