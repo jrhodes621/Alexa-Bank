@@ -11,24 +11,9 @@ var errorHandler = require('api-error-handler');
 
 var app = express();
 
-let alexaVerifier = require('alexa-verifier'); // at the top of our file
+app.use(avm());
 
-function requestVerifier(req, res, next) {
-  alexaVerifier(
-      req.headers.signaturecertchainurl,
-      req.headers.signature,
-      req.rawBody,
-      function verificationCallback(err) {
-          if (err) {
-            console.log(err);
-              res.status(401).json({ message: 'Verification Failure', error: err });
-          } else {
-              next();
-          }
-      }
-  );
-}
-
+app.use(bodyParser.json());
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 //var db;
 //mongoose.connect(process.env.MONGODB_URI); // connect to our database
