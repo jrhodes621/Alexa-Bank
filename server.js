@@ -97,11 +97,6 @@ router.post('/balance', requestVerifier, function(req, res) {
   } else if (req.body.request.type === 'IntentRequest' &&
            req.body.request.intent.name === 'Balance') {
 
-    if (!req.body.request.intent.slots.Day ||
-        !req.body.request.intent.slots.Day.value) {
-      // Handle this error by producing a response like:
-      // "Hmm, what day do you want to know the forecast for?"
-    }
     // Do your business logic to get weather data here!
     // Then send a JSON response...
 
