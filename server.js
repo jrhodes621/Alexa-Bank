@@ -2,7 +2,6 @@
 
 var debug = require('debug')('balance:server');
 var express = require("express");
-var avm = require('alexa-verifier-middleware');
 var app = express();
 var router = express.Router();
 var logger = require('morgan');
@@ -12,9 +11,29 @@ var errorHandler = require('api-error-handler');
 
 var app = express();
 
-app.use(avm());
+let alexaVerifier = require('alexa-verifier'); // at the top of our file
 
-app.use(bodyParser.json());
+function requestVerifier(req, res, next) {
+  alexaVerifier(
+      req.headers.signaturecertchainurl,
+      req.headers.signature,
+      req.rawBody,
+      function verificationCallback(err) {
+          if (err) {
+            console.log(err);
+              res.status(401).json({ message: 'Verification Failure', error: err });
+          } else {
+              next();
+          }
+      }
+  );
+}
+
+app.use(bodyParser.json({
+    verify: function getRawBody(req, res, buf) {
+        req.rawBody = buf.toString();
+    }
+}));
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 //var db;
 //mongoose.connect(process.env.MONGODB_URI); // connect to our database
@@ -59,7 +78,7 @@ function errorNotification(err, str, req) {
 }
 
 //Public endpoints
-router.post('/balance', function(req, res) {
+router.post('/balance', requestVerifier, function(req, res) {
   if (req.body.request.type === 'LaunchRequest') {
     res.json({
       "version": "1.0",
@@ -76,7 +95,7 @@ router.post('/balance', function(req, res) {
     // Per the documentation, we do NOT send ANY response... I know, awkward.
     console.log('Session ended', req.body.request.reason);
   } else if (req.body.request.type === 'IntentRequest' &&
-           req.body.request.intent.name === 'Forecast') {
+           req.body.request.intent.name === 'Balance') {
 
     if (!req.body.request.intent.slots.Day ||
         !req.body.request.intent.slots.Day.value) {
